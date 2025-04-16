@@ -1,4 +1,5 @@
-from normalization.components import Relvar, FunctionalDependency, MultivaluedDependency
+from normalization.components import Relvar, FunctionalDependency, MultivaluedDependency, Attribute
+from normalization.algorithms import closure, is_superkey, is_key
 
 
 if __name__ == "__main__":
@@ -27,3 +28,26 @@ if __name__ == "__main__":
     print("\nMultivalued dependencies:")
     for mvd in relvar.multivalued_dependencies:
         print(mvd)
+        
+    # Pruebas de cierre, superllave y llave
+
+    # Test 1: Probar con un conjunto de atributos que sabemos debe ser superllave y llave 
+    atributos1 = {Attribute("FolioP"), Attribute("Producto"), Attribute("RegimenC")}
+    print("\nTest 1: Atributos {Producto, FolioP, RegimenC}")
+    print("Cierre de atributos:", closure(atributos1, relvar.functional_dependencies))
+    print("¿Es superclave?", is_superkey(atributos1, relvar.heading, relvar.functional_dependencies))
+    print("¿Es clave candidata?", is_key(atributos1, relvar.heading, relvar.functional_dependencies))
+
+    # Test 2: No es ni superllave ni llave
+    atributos2 = {Attribute("RFC")}
+    print("\nTest 2: Atributo {RFC}")
+    print("Cierre de atributos:", closure(atributos2, relvar.functional_dependencies))
+    print("¿Es superclave?", is_superkey(atributos2, relvar.heading, relvar.functional_dependencies))
+    print("¿Es clave candidata?", is_key(atributos2, relvar.heading, relvar.functional_dependencies))
+    
+     # Test 3: Test superllave no reducida, no es llave
+    atributos3 = {Attribute("RegimenC"), Attribute("FolioP"), Attribute("Producto"), Attribute("CFDI")}
+    print("\nTest 3: Atributos {RFC, FolioP, Producto}")
+    print("Cierre de atributos:", closure(atributos3, relvar.functional_dependencies))
+    print("¿Es superclave?", is_superkey(atributos3, relvar.heading, relvar.functional_dependencies))
+    print("¿Es clave candidata?", is_key(atributos3, relvar.heading, relvar.functional_dependencies))
