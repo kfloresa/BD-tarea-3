@@ -35,8 +35,12 @@ def is_key(attributes: set[Attribute], heading: set[Attribute], functional_depen
 
 
 def is_relvar_in_bcnf(relvar: Relvar):
-    # TODO: Actividad 6
-    raise NotImplementedError()
+    bcnf = True
+    for fd in relvar.functional_dependencies:
+        if not fd.is_trivial() and not is_superkey(fd.determinant, relvar.heading, relvar.functional_dependencies):
+            bcnf = False
+            break
+    return bcnf
 
 
 def is_relvar_in_4nf(relvar: Relvar):
