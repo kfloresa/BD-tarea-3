@@ -78,8 +78,10 @@ class FunctionalDependency(Dependency):
     _SEPARATOR = "->"
 
     def is_trivial(self) -> bool:
-        # TODO: Actividad 1
-        raise NotImplementedError()
+        # 1. Se implementa is_trivial para FunctionalDependency:
+        # Comprueba si todos los atributos del RHS están contenidos en el LHS.
+        return self.dependant.issubset(self.determinant)
+
 
 
 class MultivaluedDependency(Dependency):
@@ -88,9 +90,25 @@ class MultivaluedDependency(Dependency):
     _SEPARATOR = "->->"
 
     def is_trivial(self, heading: set[Attribute]) -> bool:
-        # TODO: Actividad 2
-        raise NotImplementedError()
+        """
+        Devuelve True si esta MVD es trivial en el esquema R (heading),
+        es decir, si Y ⊆ X o X ∪ Y = R.
+        """
+        # 2. Se implementa is_trivial para MultivaluedDependency:
+        #    a) Comprueba si Y ⊆ X (caso trivial).
+        #    b) Comprueba si X ∪ Y == heading (trivial completo).
+        lhs = self.determinant
+        rhs = self.dependant
 
+        # 1) Y ⊆ X
+        if rhs.issubset(lhs):
+            return True
+
+        # 2) X ∪ Y == heading
+        if lhs.union(rhs) == heading:
+            return True
+
+        return False
 
 class Relvar:
     """Class for relvars."""
