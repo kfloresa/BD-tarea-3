@@ -52,6 +52,53 @@ if __name__ == "__main__":
     print("¿Es superclave?", is_superkey(atributos3, relvar.heading, relvar.functional_dependencies))
     print("¿Es clave candidata?", is_key(atributos3, relvar.heading, relvar.functional_dependencies))
 
+    # Test 4: BCNF y 4FN. Esperamos FNBC: False y 4FN: False
+    print("\nTest 4: usando la relvar original: ")
+    print("¿Está en BCNF?", is_relvar_in_bcnf(relvar))
+    print("¿Está en 4NF?", is_relvar_in_4nf(relvar))
+
+    ## Test 5: BCNF y 4FN. Esperamos FNBC: True y 4FN: True
+    print("\nTest 5: una relvar que está en 4FN: ")
+    fd_4nf = FunctionalDependency("{ID} -> {Nombre, Correo, Telefono}")
+    relvar_4nf = Relvar(
+        heading=["ID", "Nombre", "Correo", "Telefono"],
+        functional_dependencies=[fd_4nf],
+        multivalued_dependencies=[]  # no se necesitan dependencias multivaluadas, con las funcionales basta
+    )
+    print(f"Nueva relvar: {relvar_4nf}")
+    print("Dependencias funcionales:")
+    for fd in relvar_4nf.functional_dependencies:
+        print(fd)
+    print("Dependencias multivaluadas:")
+    for mvd in relvar_4nf.multivalued_dependencies:
+        print(mvd)
+        
+    print("¿Está en BCNF?", is_relvar_in_bcnf(relvar_4nf))
+    print("¿Está en 4NF?", is_relvar_in_4nf(relvar_4nf))
+
+    ## Test 6: BCNF y 4FN. Esperamos FNBC: True y 4FN: False
+    print("\nTest 6: usando una relvar que está en FNBC pero no en 4FN: ")
+    fd1 = FunctionalDependency("{Estudiante,Clase} -> {Calificacion}")
+    fd2 = FunctionalDependency("{Estudiante,Clase} -> {Libro}") 
+    mvd = MultivaluedDependency("{Clase} ->-> {Libro}")
+
+    relvar_sBCn4 = Relvar(
+        heading=["Estudiante", "Clase", "Calificacion", "Libro"],
+        functional_dependencies=[fd1, fd2],
+        multivalued_dependencies=[mvd]
+    )
+    print(f"Relvar que está en FNBC pero no 4FN: {relvar_sBCn4}")
+    print("Dependencias funcionales:")
+    for fd in relvar_sBCn4.functional_dependencies:
+        print(fd)
+    print("Dependencias multivaluadas:")
+    for mvd in relvar_sBCn4.multivalued_dependencies:
+        print(mvd)
+
+    print("¿Está en BCNF?", is_relvar_in_bcnf(relvar_sBCn4))
+    print("¿Está en 4NF?", is_relvar_in_4nf(relvar_sBCn4))
+
+
 #prueba actividades 1 y 2
 
 
