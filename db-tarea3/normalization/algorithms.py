@@ -44,5 +44,10 @@ def is_relvar_in_bcnf(relvar: Relvar):
 
 
 def is_relvar_in_4nf(relvar: Relvar):
-    # TODO: Actividad 7
-    raise NotImplementedError()
+    if not is_relvar_in_bcnf(relvar):
+        return False
+    for mvd in relvar.multivalued_dependencies:
+        if not mvd.is_trivial(relvar.heading):
+            if not is_superkey(mvd.determinant, relvar.heading, relvar.functional_dependencies):
+                return False
+    return True
