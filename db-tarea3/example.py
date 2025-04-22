@@ -51,3 +51,41 @@ if __name__ == "__main__":
     print("Cierre de atributos:", closure(atributos3, relvar.functional_dependencies))
     print("¿Es superclave?", is_superkey(atributos3, relvar.heading, relvar.functional_dependencies))
     print("¿Es clave candidata?", is_key(atributos3, relvar.heading, relvar.functional_dependencies))
+
+#prueba actividades 1 y 2
+
+
+from components import FunctionalDependency, MultivaluedDependency, Attribute
+
+def test_functional_dependencies():
+    print("=== FunctionalDependency Tests ===")
+    # Caso 1: trivial porque {B} ⊆ {A,B}
+    fd1 = FunctionalDependency("{A,B}->{B}")
+    print(f"{fd1} → trivial? {fd1.is_trivial()}   # esperado: True")
+
+    # Caso 2: no trivial porque {C} ⊄ {A,B}
+    fd2 = FunctionalDependency("{A,B}->{C}")
+    print(f"{fd2} → trivial? {fd2.is_trivial()}   # esperado: False")
+    print()
+
+def test_multivalued_dependencies():
+    print("=== MultivaluedDependency Tests ===")
+    # Definimos el esquema R = {A, B, C}
+    R = {Attribute('A'), Attribute('B'), Attribute('C')}
+
+    # Caso 1: trivial porque {B} ⊆ {A,B}
+    mvd1 = MultivaluedDependency("{A,B}->->{B}")
+    print(f"{mvd1} → trivial? {mvd1.is_trivial(R)}   # esperado: True")
+
+    # Caso 2: trivial porque X∪Y == R ({A,B}∪{A,C} = {A,B,C})
+    mvd2 = MultivaluedDependency("{A,B}->->{A,C}")
+    print(f"{mvd2} → trivial? {mvd2.is_trivial(R)}   # esperado: True")
+
+    # Caso 3: trivial porque X∪Y == R ({A,B}∪{C} = {A,B,C})
+    mvd3 = MultivaluedDependency("{A,B}->->{C}")
+    print(f"{mvd3} → trivial? {mvd3.is_trivial(R)}   # esperado: True")
+
+if __name__ == "__main__":
+    test_functional_dependencies()
+    test_multivalued_dependencies()
+
