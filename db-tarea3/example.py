@@ -1,8 +1,35 @@
 from normalization.components import Relvar, FunctionalDependency, MultivaluedDependency, Attribute
-from normalization.algorithms import closure, is_superkey, is_key
+from normalization.algorithms import closure, is_superkey, is_key, is_relvar_in_4nf, is_relvar_in_bcnf
 
 
 if __name__ == "__main__":
+    print("=== FunctionalDependency Tests ===")
+    # Caso 1: trivial porque {B} ⊆ {A,B}
+    fd1 = FunctionalDependency("{A,B}->{B}")
+    print(f"{fd1} -> trivial? {fd1.is_trivial()}   # esperado: True")
+
+    # Caso 2: no trivial porque {C} ⊄ {A,B}
+    fd2 = FunctionalDependency("{A,B}->{C}")
+    print(f"{fd2} -> trivial? {fd2.is_trivial()}   # esperado: False")
+    
+    print("\n=== MultivaluedDependency Tests ===")
+    # Definimos el esquema R = {A, B, C}
+    R = {Attribute('A'), Attribute('B'), Attribute('C')}
+
+    # Caso 1: trivial porque {B} ⊆ {A,B}
+    mvd1 = MultivaluedDependency("{A,B}->->{B}")
+    print(f"{mvd1} ->-> trivial? {mvd1.is_trivial(R)}   # esperado: True")
+
+    # Caso 2: trivial porque X∪Y == R ({A,B}∪{A,C} = {A,B,C})
+    mvd2 = MultivaluedDependency("{A,B}->->{A,C}")
+    print(f"{mvd2} ->-> trivial? {mvd2.is_trivial(R)}   # esperado: True")
+
+    # Caso 3: trivial porque X∪Y == R ({A,B}∪{C} = {A,B,C})
+    mvd3 = MultivaluedDependency("{A,B}->->{C}")
+    print(f"{mvd3} ->-> trivial? {mvd3.is_trivial(R)}   # esperado: True")
+    
+    print("\nTest de algoritmos")
+    #Test 
     fd1 = FunctionalDependency("{RFC} -> {Nombre, CP}")
     fd2 = FunctionalDependency("{FolioF} -> {RFC}")
     fd3 = FunctionalDependency("{FolioF} -> {MontoF, IVA, FechaF}")
@@ -98,41 +125,4 @@ if __name__ == "__main__":
     print("¿Está en BCNF?", is_relvar_in_bcnf(relvar_sBCn4))
     print("¿Está en 4NF?", is_relvar_in_4nf(relvar_sBCn4))
 
-
-#prueba actividades 1 y 2
-
-
-from components import FunctionalDependency, MultivaluedDependency, Attribute
-
-def test_functional_dependencies():
-    print("=== FunctionalDependency Tests ===")
-    # Caso 1: trivial porque {B} ⊆ {A,B}
-    fd1 = FunctionalDependency("{A,B}->{B}")
-    print(f"{fd1} → trivial? {fd1.is_trivial()}   # esperado: True")
-
-    # Caso 2: no trivial porque {C} ⊄ {A,B}
-    fd2 = FunctionalDependency("{A,B}->{C}")
-    print(f"{fd2} → trivial? {fd2.is_trivial()}   # esperado: False")
-    print()
-
-def test_multivalued_dependencies():
-    print("=== MultivaluedDependency Tests ===")
-    # Definimos el esquema R = {A, B, C}
-    R = {Attribute('A'), Attribute('B'), Attribute('C')}
-
-    # Caso 1: trivial porque {B} ⊆ {A,B}
-    mvd1 = MultivaluedDependency("{A,B}->->{B}")
-    print(f"{mvd1} → trivial? {mvd1.is_trivial(R)}   # esperado: True")
-
-    # Caso 2: trivial porque X∪Y == R ({A,B}∪{A,C} = {A,B,C})
-    mvd2 = MultivaluedDependency("{A,B}->->{A,C}")
-    print(f"{mvd2} → trivial? {mvd2.is_trivial(R)}   # esperado: True")
-
-    # Caso 3: trivial porque X∪Y == R ({A,B}∪{C} = {A,B,C})
-    mvd3 = MultivaluedDependency("{A,B}->->{C}")
-    print(f"{mvd3} → trivial? {mvd3.is_trivial(R)}   # esperado: True")
-
-if __name__ == "__main__":
-    test_functional_dependencies()
-    test_multivalued_dependencies()
 
