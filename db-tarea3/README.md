@@ -13,11 +13,11 @@ pero debe funcionar con 3.8 o superior.
 ## a) components.py 
 El archivo components.py define las clases fundamentales como:
 
-    Attribute: Representa un atributo simple en el modelo relacional.
-    Dependency: Clase abstracta base para las dependencias.
-    FunctionalDependency: Implementa las dependencias funcionales con métodos para verificar si son triviales.
-    MultivaluedDependency: Implementa las dependencias multivaluadas con su propia verificación de trivialidad.
-    Relvar: Representa una variable relacional completa con encabezado y conjuntos de dependencias.
+1. Attribute: Representa un atributo simple en el modelo relacional.
+2. Dependency: Clase abstracta base para las dependencias.
+3. FunctionalDependency: Implementa las dependencias funcionales con métodos para verificar si son triviales.
+4. MultivaluedDependency: Implementa las dependencias multivaluadas con su propia verificación de trivialidad.
+5. Relvar: Representa una variable relacional completa con encabezado y conjuntos de dependencias.
 
 Los algoritmos en algorithms.py operan sobre estas estructuras para realizar análisis de normalización.
 
