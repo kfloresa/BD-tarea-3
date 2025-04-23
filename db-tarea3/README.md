@@ -40,3 +40,7 @@ Podemos encontrar ejemplos de aplicación a los métodos de components.py y algo
 3. Los algoritmos implementados no consideran la normalización automática, solo la verificación de formas normales.
 4. Para la verificación de 4NF, se requiere que la relvar ya esté en BCNF.
 5. Las dependencias triviales no influyen en las verificaciones de formas normales.
+
+
+
+![alt text](https://github.com/kfloresa/BD-tarea-3/blob/main/db-tarea3/media1.jpg)
